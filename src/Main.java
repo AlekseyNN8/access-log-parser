@@ -1,9 +1,46 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
-        System.out.println("Случайное число от 0 до 1: " + Math.random());
+public class Main {
+    public static void main(String[] args) throws FileNotFoundException {
+
+        String path = "C:\\Users\\AKozin\\Documents\\HM2\\AccessLogParser\\src\\main\\resources\\access.log";
+        File file = new File(path);
+        long lineCount = 0;
+        int maxLength = 0;
+        int minLength = Integer.MAX_VALUE;
+
+
+        try {
+
+            FileReader fileReader = new FileReader(path);
+            BufferedReader reader = new BufferedReader(fileReader);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                int length = line.length();
+                lineCount++;
+//                System.out.println("Длинна каждой строки : " + length);
+                if(length > maxLength){
+                    maxLength=length;
+                } if (length < minLength){
+                    minLength = length;
+                } if (length > 1024) {
+                    throw new LineTooLong("Строка длиной более 1024 символа : " + length);
+                }
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        System.out.println("All lines: " + lineCount);
+        System.out.println("Max length : " + maxLength);
+        System.out.println("Min length : " + minLength);
+
+
+
+
 
     }
 
