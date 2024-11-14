@@ -1,4 +1,6 @@
 
+import com.sun.jdi.Value;
+
 import java.time.LocalDateTime;
 import java.time.Duration;
 import java.util.Arrays;
@@ -11,7 +13,9 @@ public class Statistics {
     private LocalDateTime minTime;
     private LocalDateTime maxTime;
     private final HashSet<String> pages = new HashSet<>();
+    private final HashSet<String> pageIsNull = new HashSet<>();
     private final HashMap<String, Integer> osStat = new HashMap<>();
+    private final HashMap<String, Integer> browserStat = new HashMap<>();
 
     public Statistics() {
         this.totalTraffic = 0;
@@ -25,6 +29,15 @@ public class Statistics {
         this.totalTraffic += entry.getSize();
         if (entry.getCodeResponse() ==200) {
             pages.add(entry.getReferer());
+        }
+
+
+        if (entry.getCodeResponse() == 404) {
+            pageIsNull.add(String.valueOf(entry.getCodeResponse()));
+        }
+        String browserType = entry.getUserAgent().getBrowser();
+        if (browserType != null) {
+            browserStat.put(browserType, browserStat.getOrDefault(browserType, 0) + 1);
         }
 
         String osType = entry.getUserAgent().getOsType();
@@ -82,6 +95,11 @@ public class Statistics {
         return osStat;
     }
 
+
+    public HashMap<String, Integer> getBrowserStat() {
+        return new HashMap<>(browserStat);
+    }
+
     public long getTotalTraffic() {
         return totalTraffic;
     }
@@ -94,6 +112,9 @@ public class Statistics {
         return pages;
     }
 
+    public HashSet<String> getPageIsNull() {
+        return new HashSet<>(pageIsNull);
+    }
 
     public LocalDateTime getMaxTime() {
         return maxTime;

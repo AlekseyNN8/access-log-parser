@@ -52,7 +52,7 @@ public class Main {
             System.out.println("getPages " + statistics.getPages());
             System.out.println("getOsStatistics " + statistics.getOsStatistics());
             System.out.println("getOsStat " + statistics.getOsStat());
-            System.out.println();
+            System.out.println("getBrowserStat " + statistics.getBrowserStat());
 
 
 
