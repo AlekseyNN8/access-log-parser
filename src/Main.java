@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,9 +9,9 @@ public class Main {
 
         String path = "C:\\Users\\AKozin\\Documents\\HM2\\AccessLogParser\\src\\main\\resources\\access.log";
         Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
-        int totalRequests = 0;
-        int yandexBotRequests = 0;
-        int googleBotRequests = 0;
+        long totalRequests = 0;
+        long yandexBotRequests = 0;
+        long googleBotRequests = 0;
         FileReader fileReader = new FileReader(path);
         BufferedReader reader = new BufferedReader(fileReader);
         String line;
@@ -18,6 +19,7 @@ public class Main {
         try {
             Statistics statistics = new Statistics();
             while ((line = reader.readLine()) != null) {
+                int count = 1;
                 Matcher matcher = pattern.matcher(line);
                 int length = line.length();
                 totalRequests++;
@@ -41,11 +43,20 @@ public class Main {
 
 
             }
+
+
             System.out.println("getTotalTraffic - " + statistics.getTotalTraffic());
             System.out.println("getMaxTime - " + statistics.getMaxTime());
             System.out.println("getMinTime - " + statistics.getMinTime());
             System.out.println("getTrafficRate - " + statistics.getTrafficRate());
-            int allReq = yandexBotRequests + googleBotRequests;
+            System.out.println("getPages " + statistics.getPages());
+            System.out.println("getOsStatistics " + statistics.getOsStatistics());
+            System.out.println("getOsStat " + statistics.getOsStat());
+            System.out.println();
+
+
+
+            long allReq = yandexBotRequests + googleBotRequests;
 
             if (totalRequests > 0) {
                 double yandexBotRatio = (double) yandexBotRequests / allReq * 100;
@@ -64,7 +75,6 @@ public class Main {
         }
 
 
-//        System.out.println("All lines: " + totalRequests);
     }
 
 
